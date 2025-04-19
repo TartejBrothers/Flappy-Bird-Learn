@@ -5,7 +5,7 @@ import { FaDove } from "react-icons/fa";
 import { getRandomQuestion } from "../data/questions";
 import QuestionModal from "./QuestionModal";
 import { Question } from "../types";
-
+import BirdImage from "../images/bird.png";
 // Constants
 const GRAVITY = 5;
 const JUMP_HEIGHT = 60;
@@ -27,9 +27,9 @@ const Game: React.FC = () => {
   const [showQuestion, setShowQuestion] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
 
-  const gravityInterval = useRef<NodeJS.Timeout | null>(null);
-  const pipeMoveInterval = useRef<NodeJS.Timeout | null>(null);
-  const pipeGeneratorInterval = useRef<NodeJS.Timeout | null>(null);
+  const gravityInterval = useRef<number | null>(null);
+  const pipeMoveInterval = useRef<number | null>(null);
+  const pipeGeneratorInterval = useRef<number | null>(null);
 
   useEffect(() => {
     const storedHigh = localStorage.getItem("flappyLearnHighScore");
@@ -170,10 +170,17 @@ const Game: React.FC = () => {
         style={{
           left: `calc(50% - ${BIRD_SIZE / 2}px)`,
           top: `${birdY}px`,
-          transform: `rotate(${dead ? 90 : -birdY / 10}deg)`,
+          // transform: `rotate(${dead ? 90 : -birdY / 10}deg)`,
         }}
       >
-        <FaDove size={BIRD_SIZE} className="text-yellow-500" />
+        <img
+          src={BirdImage}
+          alt="Flappy Bird"
+          className="w-12 h-12 object-cover"
+          style={{
+            transform: `rotate(${dead ? 90 : +birdY / 10}deg)`,
+          }}
+        />
       </div>
 
       {pipes.map((pipe, idx) => (
