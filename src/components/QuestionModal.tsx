@@ -24,14 +24,16 @@ const QuestionModal: React.FC<QuestionModalProps> = ({
     setSelectedAnswer(answer);
     setIsAnswered(true);
 
+    const isCorrect = answer === question.correctAnswer;
+    const delay = isCorrect ? 1500 : 3000;
+
     setTimeout(() => {
-      const isCorrect = answer === question.correctAnswer;
       onAnswer(isCorrect);
 
       if (!isCorrect) {
         onGameOver(); // Notify Game.tsx of game over
       }
-    }, 1500);
+    }, delay);
   };
 
   const getAnswerClass = (answer: string) => {
