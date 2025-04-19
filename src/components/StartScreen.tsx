@@ -1,6 +1,6 @@
 import React from "react";
 import { FaDove } from "react-icons/fa";
-
+import BirdImage from "../images/bird.png";
 interface StartScreenProps {
   onStart: () => void;
 }
@@ -14,7 +14,11 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
 
       <div className="mb-8 flex justify-center">
         <div className="bird-fly">
-          <FaDove size={64} className="text-yellow-500" />
+          <img
+            src={BirdImage}
+            alt="Flappy Bird"
+            className="w-16 h-16 object-cover animate-fly"
+          />
         </div>
       </div>
 

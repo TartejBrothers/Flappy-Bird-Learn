@@ -1,7 +1,6 @@
 // Game.tsx
 
 import React, { useEffect, useRef, useState } from "react";
-import { FaDove } from "react-icons/fa";
 import { getRandomQuestion } from "../data/questions";
 import QuestionModal from "./QuestionModal";
 import { Question } from "../types";
@@ -170,7 +169,6 @@ const Game: React.FC = () => {
         style={{
           left: `calc(50% - ${BIRD_SIZE / 2}px)`,
           top: `${birdY}px`,
-          // transform: `rotate(${dead ? 90 : -birdY / 10}deg)`,
         }}
       >
         <img
