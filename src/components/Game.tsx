@@ -1,12 +1,11 @@
-// Game.tsx
-
 import React, { useEffect, useRef, useState } from "react";
 import { getRandomQuestion } from "../data/questions";
 import QuestionModal from "./QuestionModal";
+import GameOverModal from "./GameOverModal";
 import { Question } from "../types";
 import BirdImage from "../images/bird.png";
-import "../styles/Game.css"; // Assuming you have a CSS file for styles
-// Constants
+import "../styles/Game.css";
+
 const GRAVITY = 5;
 const JUMP_HEIGHT = 60;
 const BIRD_SIZE = 50;
@@ -26,6 +25,7 @@ const Game: React.FC = () => {
   const [highScore, setHighScore] = useState(0);
   const [showQuestion, setShowQuestion] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
+  const [isGameOver, setIsGameOver] = useState(false); // NEW STATE
 
   const gravityInterval = useRef<number | null>(null);
   const pipeMoveInterval = useRef<number | null>(null);
@@ -107,9 +107,10 @@ const Game: React.FC = () => {
 
   const startGame = (isRevive = false) => {
     setDead(false);
+    setIsGameOver(false); // RESET
     setBirdY(200);
     setPipes([]);
-    if (!isRevive) setScore(0); // Only reset score if it's a new game
+    if (!isRevive) setScore(0);
     setGameRunning(true);
   };
 
@@ -124,10 +125,13 @@ const Game: React.FC = () => {
 
   const handleQuestionAnswer = (correct: boolean) => {
     setShowQuestion(false);
-    if (correct) startGame(true); // Pass revive flag
+    if (correct) {
+      startGame(true); // Revive
+    } else {
+      setIsGameOver(true); // Mark game over
+    }
   };
 
-  // Collision detection
   useEffect(() => {
     if (!gameRunning) return;
     const birdTop = birdY;
@@ -143,7 +147,7 @@ const Game: React.FC = () => {
         stopGame();
       } else if (
         pipe.x + PIPE_WIDTH < birdLeft &&
-        pipe.x + PIPE_WIDTH + 5 >= birdLeft // last frame it was ahead
+        pipe.x + PIPE_WIDTH + 5 >= birdLeft
       ) {
         setScore((s) => s + 1);
       }
@@ -153,7 +157,7 @@ const Game: React.FC = () => {
   return (
     <div
       ref={gameContainerRef}
-      className="relative w-full max-w-3xl h-[600px] gamecontainer overflow-hidden rounded-lg border-4 border-white "
+      className="relative w-full max-w-3xl h-[600px] gamecontainer overflow-hidden rounded-lg border-4 border-white"
       onClick={handleJump}
       tabIndex={0}
       onKeyDown={(e) => e.key === " " && handleJump()}
@@ -216,10 +220,14 @@ const Game: React.FC = () => {
 
       {showQuestion && currentQuestion && (
         <QuestionModal
+          score={score}
           question={currentQuestion}
           onAnswer={handleQuestionAnswer}
+          onGameOver={() => setIsGameOver(true)} // ✅ Add this line
         />
       )}
+
+      {isGameOver && <GameOverModal score={score} />}
     </div>
   );
 };

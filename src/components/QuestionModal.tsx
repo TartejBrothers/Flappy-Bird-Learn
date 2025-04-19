@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import { Question } from "../types";
+import GameOverModal from "./GameOverModal";
 
 interface QuestionModalProps {
   question: Question;
+  score: number;
   onAnswer: (isCorrect: boolean) => void;
+  onGameOver: () => void;
 }
 
 const QuestionModal: React.FC<QuestionModalProps> = ({
   question,
+  score,
   onAnswer,
+  onGameOver,
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -19,13 +24,12 @@ const QuestionModal: React.FC<QuestionModalProps> = ({
     setSelectedAnswer(answer);
     setIsAnswered(true);
 
-    // Wait a moment to show the result before proceeding
     setTimeout(() => {
       const isCorrect = answer === question.correctAnswer;
       onAnswer(isCorrect);
 
       if (!isCorrect) {
-        window.location.reload();
+        onGameOver(); // Notify Game.tsx of game over
       }
     }, 1500);
   };
@@ -34,15 +38,12 @@ const QuestionModal: React.FC<QuestionModalProps> = ({
     if (!isAnswered) {
       return "bg-white hover:bg-blue-50 border-gray-300";
     }
-
     if (answer === question.correctAnswer) {
       return "bg-green-100 border-green-500 text-green-800";
     }
-
     if (answer === selectedAnswer) {
       return "bg-red-100 border-red-500 text-red-800";
     }
-
     return "bg-gray-100 border-gray-300 text-gray-500";
   };
 
