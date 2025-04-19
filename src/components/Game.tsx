@@ -105,11 +105,11 @@ const Game: React.FC = () => {
     setShowQuestion(true);
   };
 
-  const startGame = () => {
+  const startGame = (isRevive = false) => {
     setDead(false);
     setBirdY(200);
     setPipes([]);
-    setScore(0);
+    if (!isRevive) setScore(0); // Only reset score if it's a new game
     setGameRunning(true);
   };
 
@@ -124,7 +124,7 @@ const Game: React.FC = () => {
 
   const handleQuestionAnswer = (correct: boolean) => {
     setShowQuestion(false);
-    if (correct) startGame();
+    if (correct) startGame(true); // Pass revive flag
   };
 
   // Collision detection
