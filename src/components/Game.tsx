@@ -141,7 +141,10 @@ const Game: React.FC = () => {
 
       if (inPipeX && inPipeY) {
         stopGame();
-      } else if (pipe.x + PIPE_WIDTH === birdLeft) {
+      } else if (
+        pipe.x + PIPE_WIDTH < birdLeft &&
+        pipe.x + PIPE_WIDTH + 5 >= birdLeft // last frame it was ahead
+      ) {
         setScore((s) => s + 1);
       }
     });
