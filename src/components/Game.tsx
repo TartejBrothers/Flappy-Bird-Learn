@@ -5,6 +5,7 @@ import { getRandomQuestion } from "../data/questions";
 import QuestionModal from "./QuestionModal";
 import { Question } from "../types";
 import BirdImage from "../images/bird.png";
+import "../styles/Game.css"; // Assuming you have a CSS file for styles
 // Constants
 const GRAVITY = 5;
 const JUMP_HEIGHT = 60;
@@ -152,7 +153,7 @@ const Game: React.FC = () => {
   return (
     <div
       ref={gameContainerRef}
-      className="relative w-full max-w-3xl h-[600px] bg-sky-300 overflow-hidden rounded-lg border-4 border-white"
+      className="relative w-full max-w-3xl h-[600px] gamecontainer overflow-hidden rounded-lg border-4 border-white "
       onClick={handleJump}
       tabIndex={0}
       onKeyDown={(e) => e.key === " " && handleJump()}
@@ -184,7 +185,7 @@ const Game: React.FC = () => {
       {pipes.map((pipe, idx) => (
         <React.Fragment key={idx}>
           <div
-            className="absolute bg-green-500 border-2 border-green-700"
+            className="absolute bg-green-500 border-4 border-green-700"
             style={{
               left: `${pipe.x}px`,
               top: 0,
@@ -193,7 +194,7 @@ const Game: React.FC = () => {
             }}
           />
           <div
-            className="absolute bg-green-500 border-2 border-green-700"
+            className="absolute bg-green-500 border-4 border-green-700"
             style={{
               left: `${pipe.x}px`,
               top: pipe.y + PIPE_GAP,
